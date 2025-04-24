@@ -16,14 +16,7 @@ public class CustomUpdateManager : MonoBehaviour
             if (_instance == null && !isShuttingDown)
             {
                 _instance = FindObjectOfType<CustomUpdateManager>();
-
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("CustomUpdateManager");
-                    _instance = go.AddComponent<CustomUpdateManager>();
-                }
             }
-
             return _instance;
         }
     }

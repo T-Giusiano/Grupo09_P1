@@ -13,7 +13,10 @@ public class PaddleController : MonoBehaviour, IUpdatable
 
     private void OnDisable()
     {
-        CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        if (CustomUpdateManager.Instance != null)
+        {
+            CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        }
     }
 
     public void OnUpdate()

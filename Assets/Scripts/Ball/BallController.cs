@@ -11,6 +11,8 @@ public class BallController : MonoBehaviour, IUpdatable
     private List<GameObject> bricks;
     private List<GameObject> powerUps;
     private BallPool ballPool;
+    [SerializeField] private AudioClip bounceClip;
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
@@ -27,7 +29,10 @@ public class BallController : MonoBehaviour, IUpdatable
 
     private void OnDisable()
     {
-        CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        if (CustomUpdateManager.Instance != null)
+        {
+            CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        }
     }
 
     public void OnUpdate()
@@ -72,6 +77,11 @@ public class BallController : MonoBehaviour, IUpdatable
             velocity.y = Mathf.Abs(velocity.y);
             float hitPoint = (transform.position.x - paddle.transform.position.x) / 1.5f;
             velocity.x = hitPoint * speed;
+            //audio 
+            if (bounceClip != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(bounceClip);
+            }
         }
 
         CheckCollisions(bricks, true);
