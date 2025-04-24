@@ -7,7 +7,7 @@ public class ColorController : MonoBehaviour
     MaterialPropertyBlock propertyBlock;
     public Color color;
 
-    private void OnValidate()
+    private void Awake()
     {
         if (propertyBlock == null)
             propertyBlock = new MaterialPropertyBlock();
