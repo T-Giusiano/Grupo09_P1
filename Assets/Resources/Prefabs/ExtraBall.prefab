@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1852433111038725737}
   - component: {fileID: 3956666269834607238}
   - component: {fileID: 7212505961528032472}
+  - component: {fileID: -480574381978666669}
   m_Layer: 0
   m_Name: ExtraBall
   m_TagString: Untagged
@@ -96,4 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126024560ee1f584c89d861099f1b76e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+--- !u!114 &-480574381978666669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9098466718935468158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851cce3f56063534bbd85932025475fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.080822945, g: 1, b: 0, a: 1}
