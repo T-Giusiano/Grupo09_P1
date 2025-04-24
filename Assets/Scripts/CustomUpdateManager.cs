@@ -7,12 +7,13 @@ public class CustomUpdateManager : MonoBehaviour
     private static CustomUpdateManager _instance;
 
     private List<IUpdatable> updatables = new List<IUpdatable>();
+    private static bool isShuttingDown = false;
 
     public static CustomUpdateManager Instance
     {
         get
         {
-            if (_instance == null)
+            if (_instance == null && !isShuttingDown)
             {
                 _instance = FindObjectOfType<CustomUpdateManager>();
 
@@ -59,6 +60,10 @@ public class CustomUpdateManager : MonoBehaviour
     private void Update()
     {
         CustomUpdate();
+    }
+    private void OnApplicationQuit()
+    {
+        isShuttingDown = true;
     }
 }
 public interface IUpdatable

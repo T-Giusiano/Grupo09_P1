@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour, IUpdatable
 {
-    public float speed = 5f;
+    private float speed = 15f;
     private Vector3 velocity;
     private bool isLaunched = false;
 

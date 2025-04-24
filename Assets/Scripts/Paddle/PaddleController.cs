@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PaddleController : MonoBehaviour, IUpdatable
 {
-    public float speed = 10f;
+    private float speed = 20f;
 
     private void OnEnable()
     {

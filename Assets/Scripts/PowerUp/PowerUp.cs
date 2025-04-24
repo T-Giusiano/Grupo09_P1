@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour, IUpdatable
 {
-    public float fallSpeed = 3f;
+    private float fallSpeed = 3f;
 
     void OnEnable()
     {

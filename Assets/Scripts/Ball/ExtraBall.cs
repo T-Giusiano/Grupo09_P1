@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ExtraBall : MonoBehaviour, IUpdatable
 {
-    public float speed = 5f;
+    private float speed = 15f;
     private Vector3 velocity;
     private GameObject paddle;
     private List<GameObject> bricks;

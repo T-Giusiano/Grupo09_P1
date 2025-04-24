@@ -43,6 +43,6 @@ public class ScoreManager : MonoBehaviour
 
     private void WinGame()
     {
-        SceneManager.LoadScene("Win");
+        SceneManager.LoadScene("YouWin");
     }
 }
