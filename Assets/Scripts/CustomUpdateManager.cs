@@ -59,8 +59,4 @@ public class CustomUpdateManager : MonoBehaviour
         isShuttingDown = true;
     }
 }
-public interface IUpdatable
-{
-    void OnUpdate();
-}
 
