@@ -3,6 +3,8 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour, IUpdatable
 {
     private float fallSpeed = 3f;
+    public PowerUpCFIG config;
+    public string powerUpName = "Multiball";
 
     void OnEnable()
     {
@@ -11,27 +13,31 @@ public class PowerUp : MonoBehaviour, IUpdatable
 
     void OnDisable()
     {
-        CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        if (CustomUpdateManager.Instance != null)
+            CustomUpdateManager.Instance.UnregisterUpdatable(this);
     }
 
     public void OnUpdate()
     {
+        if (config == null) return;
+
         transform.position += Vector3.down * fallSpeed * Time.deltaTime;
 
         if (transform.position.y <= -8f)
         {
-            Destroy(gameObject);
+            GameObject.Destroy(gameObject);
         }
 
         GameObject paddle = GameObject.Find("Paddle");
         if (IsCollidingWith(paddle))
         {
             Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
-            GameObject extraBall = Resources.Load<GameObject>("Prefabs/ExtraBall");
-            Instantiate(extraBall, spawnPos, Quaternion.identity);
-            Instantiate(extraBall, spawnPos, Quaternion.identity);
-
-            Destroy(gameObject);
+            for (int i = 0; i < config.ballsToSpawn; i++)
+            {
+                GameObject extraBall = Resources.Load<GameObject>("Prefabs/ExtraBall");
+                Instantiate(extraBall, spawnPos, Quaternion.identity);
+            }
+            GameObject.Destroy(gameObject);
         }
     }
 

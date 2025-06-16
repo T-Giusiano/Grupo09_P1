@@ -97,6 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86951c72b5de9ab4ca267f10b1c7a8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: d8c259c5b26224048a37d0e82d66ed21, type: 2}
+  powerUpName: Multiball
 --- !u!114 &-3872370078331782278
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,9 +10,11 @@ public class ExtraBall : MonoBehaviour, IUpdatable
     private List<GameObject> powerUps;
     [SerializeField] private AudioClip bounceClip;
     [SerializeField] private AudioSource audioSource;
+    private PowerUpCFIG multiballConfig;
 
     private void Awake()
     {
+        multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
         DetectBricks();
         DetectPowerUps();
@@ -123,12 +125,26 @@ public class ExtraBall : MonoBehaviour, IUpdatable
                 ScoreManager.Instance.AddScore(100);
 
                 if (isBrick)
+                {
                     ScoreManager.Instance.CheckBricks();
+                }
                 else
                 {
-                    Vector3 dropPos = obj.transform.position;
-                    GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
-                    Instantiate(powerUpDrop, dropPos, Quaternion.identity);
+                    string powerUpName = "Multiball";
+                    if (PUPManager.Instance.CanSpawnPowerUp(powerUpName))
+                    {
+                        Vector3 dropPos = obj.transform.position;
+                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp"); 
+                        GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
+
+                        // Configuramos el power-up
+                        PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
+                        powerUpScript.config = multiballConfig;  // <- Este valor tiene que estar asignado en el inspector
+                        powerUpScript.powerUpName = powerUpName;
+
+                        PUPManager.Instance.RegisterPowerUp(powerUpName);
+
+                    }
                 }
 
                 Destroy(obj);
@@ -137,4 +153,5 @@ public class ExtraBall : MonoBehaviour, IUpdatable
             }
         }
     }
+
 }

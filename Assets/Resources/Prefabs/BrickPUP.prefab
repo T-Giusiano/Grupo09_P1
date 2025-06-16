@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BrickPUP
       objectReference: {fileID: 0}
+    - target: {fileID: 5341210859704895967, guid: 1080f91b81f6a4247871d459ad511dea, type: 3}
+      propertyPath: m_TagString
+      value: Brick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

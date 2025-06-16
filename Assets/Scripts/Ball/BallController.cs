@@ -6,16 +6,18 @@ public class BallController : MonoBehaviour, IUpdatable
     private float speed = 15f;
     private Vector3 velocity;
     private bool isLaunched = false;
-
+    [SerializeField] private PowerUpCFIG powerUpConfig;
     private GameObject paddle;
     private List<GameObject> bricks;
     private List<GameObject> powerUps;
     private BallPool ballPool;
     [SerializeField] private AudioClip bounceClip;
     [SerializeField] private AudioSource audioSource;
+    private PowerUpCFIG multiballConfig;
 
     private void Awake()
     {
+        multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
         ballPool = FindObjectOfType<BallPool>();
         DetectBricks();
@@ -146,9 +148,19 @@ public class BallController : MonoBehaviour, IUpdatable
                     ScoreManager.Instance.CheckBricks();
                 else
                 {
-                    Vector3 dropPos = obj.transform.position;
-                    GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
-                    Instantiate(powerUpDrop, dropPos, Quaternion.identity);
+                    if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
+                    {
+                        Vector3 dropPos = obj.transform.position;
+                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp"); 
+                        GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
+
+                        // Configuramos el power-up
+                        PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
+                        powerUpScript.config = multiballConfig;  // <- Este valor tiene que estar asignado en el inspector
+                        powerUpScript.powerUpName = "Multiball";
+
+                        PUPManager.Instance.RegisterPowerUp("Multiball");
+                    }
                 }
 
                 Destroy(obj);
