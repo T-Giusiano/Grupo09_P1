@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 7834485107519885294}
   - component: {fileID: 1802992952883815991}
   - component: {fileID: 1783922013527252887}
-  - component: {fileID: 1647867470467033033}
-  - component: {fileID: -458484198919255925}
+  - component: {fileID: 1762168742070557829}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Untagged
@@ -85,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1647867470467033033
+--- !u!114 &1762168742070557829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,19 +93,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2083019871356487718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f3ed44f7040ccc419d994dd4da80cb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f5827ddc20cbeb488de4f47cd1a3239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-458484198919255925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083019871356487718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 851cce3f56063534bbd85932025475fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 1, a: 0}
+  paddlePrefab: {fileID: 0}
