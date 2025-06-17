@@ -9,6 +9,7 @@ TagManager:
   - BrickPUP
   - Margin
   - LoseMargin
+  - BrickSpawn
   layers:
   - Default
   - TransparentFX
