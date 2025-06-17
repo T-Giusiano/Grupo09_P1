@@ -68,6 +68,7 @@ public class BallController : MonoBehaviour, IUpdatable
             }
             if (transform.position.y <= -8f)
             {
+                SceneAndUIManager.Instance.LoseLife();
                 BallPool.Instance.ReturnBall(gameObject);
                 BallPool.Instance.GetBall();
                 return;
@@ -84,6 +85,7 @@ public class BallController : MonoBehaviour, IUpdatable
             {
                 audioSource.PlayOneShot(bounceClip);
             }
+            SceneAndUIManager.Instance.RegisterPaddleHit(); 
         }
 
         CheckCollisions(bricks, true);
@@ -142,6 +144,7 @@ public class BallController : MonoBehaviour, IUpdatable
             if (IsCollidingWith(obj))
             {
                 velocity.y = -velocity.y;
+                SceneAndUIManager.Instance.RegisterBrickDestroyed();
                 ScoreManager.Instance.AddScore(100);
 
                 if (isBrick)
@@ -156,7 +159,7 @@ public class BallController : MonoBehaviour, IUpdatable
 
                         // Configuramos el power-up
                         PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
-                        powerUpScript.config = multiballConfig;  // <- Este valor tiene que estar asignado en el inspector
+                        powerUpScript.config = multiballConfig;  // Este valor tiene que estar asignado en el inspector
                         powerUpScript.powerUpName = "Multiball";
 
                         PUPManager.Instance.RegisterPowerUp("Multiball");

@@ -700,7 +700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1515225277}
-  - component: {fileID: 1515225276}
+  - component: {fileID: 1515225278}
   m_Layer: 0
   m_Name: Scripter
   m_TagString: Untagged
@@ -708,18 +708,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1515225276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515225275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b2cf9d9185fae843ae16c1a598e0a4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1515225277
 Transform:
   m_ObjectHideFlags: 0
@@ -735,6 +723,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1515225278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515225275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a6d2df6acb86cd4b9a9ad17feaea21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PauseCanva: {fileID: 0}
 --- !u!1 &1637634716
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,16 +818,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1515225276}
-        m_TargetAssemblyTypeName: SceneMovement, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
+      - m_Target: {fileID: 1515225278}
+        m_TargetAssemblyTypeName: SceneAndUIManager, Assembly-CSharp
+        m_MethodName: PlayLevel
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Level
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1637634719
@@ -949,9 +950,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1515225276}
-        m_TargetAssemblyTypeName: SceneMovement, Assembly-CSharp
-        m_MethodName: Exit
+      - m_Target: {fileID: 1515225278}
+        m_TargetAssemblyTypeName: SceneAndUIManager, Assembly-CSharp
+        m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
