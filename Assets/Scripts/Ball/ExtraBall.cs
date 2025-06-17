@@ -12,39 +12,38 @@ public class ExtraBall : MonoBehaviour, IUpdatable
     [SerializeField] private AudioSource audioSource;
     private PowerUpCFIG multiballConfig;
 
+    private GameController gameController;
+
     private void Awake()
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
         DetectBricks();
         DetectPowerUps();
-        LaunchBall();
+        gameController = FindObjectOfType<GameController>();
     }
 
     private void OnEnable()
     {
         CustomUpdateManager.Instance.RegisterUpdatable(this);
+        LaunchBall();
     }
 
     private void OnDisable()
     {
         if (CustomUpdateManager.Instance != null)
-        {
             CustomUpdateManager.Instance.UnregisterUpdatable(this);
-        }
     }
 
     public void OnUpdate()
     {
         transform.position += velocity * Time.deltaTime;
 
-
         if (transform.position.x <= -32f)
         {
             transform.position = new Vector3(-32f, transform.position.y, transform.position.z);
             velocity.x = -velocity.x;
         }
-
         if (transform.position.x >= 32f)
         {
             transform.position = new Vector3(32f, transform.position.y, transform.position.z);
@@ -55,10 +54,9 @@ public class ExtraBall : MonoBehaviour, IUpdatable
             transform.position = new Vector3(transform.position.x, 34f, transform.position.z);
             velocity.y = -velocity.y;
         }
-
         if (transform.position.y <= -8f)
         {
-            Destroy(gameObject);
+            gameController.ReturnExtraBallToPool(this);
             return;
         }
 
@@ -67,10 +65,9 @@ public class ExtraBall : MonoBehaviour, IUpdatable
             velocity.y = Mathf.Abs(velocity.y);
             float hitPoint = (transform.position.x - paddle.transform.position.x) / 1.5f;
             velocity.x = hitPoint * speed;
+
             if (bounceClip != null && audioSource != null)
-            {
                 audioSource.PlayOneShot(bounceClip);
-            }
         }
 
         CheckCollisions(bricks, true);
@@ -134,16 +131,14 @@ public class ExtraBall : MonoBehaviour, IUpdatable
                     if (PUPManager.Instance.CanSpawnPowerUp(powerUpName))
                     {
                         Vector3 dropPos = obj.transform.position;
-                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp"); 
+                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
                         GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
 
-                        // Configuramos el power-up
                         PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
-                        powerUpScript.config = multiballConfig;  // <- Este valor tiene que estar asignado en el inspector
+                        powerUpScript.config = multiballConfig;
                         powerUpScript.powerUpName = powerUpName;
 
                         PUPManager.Instance.RegisterPowerUp(powerUpName);
-
                     }
                 }
 

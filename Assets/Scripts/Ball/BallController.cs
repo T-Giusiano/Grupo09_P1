@@ -6,35 +6,35 @@ public class BallController : MonoBehaviour, IUpdatable
     private float speed = 15f;
     private Vector3 velocity;
     private bool isLaunched = false;
-    [SerializeField] private PowerUpCFIG powerUpConfig;
     private GameObject paddle;
     private List<GameObject> bricks;
     private List<GameObject> powerUps;
-    private BallPool ballPool;
+    private PowerUpCFIG multiballConfig;
+
+    private GameController gameController;
+
     [SerializeField] private AudioClip bounceClip;
     [SerializeField] private AudioSource audioSource;
-    private PowerUpCFIG multiballConfig;
 
     private void Awake()
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
-        ballPool = FindObjectOfType<BallPool>();
         DetectBricks();
         DetectPowerUps();
+        gameController = FindObjectOfType<GameController>();
     }
 
     private void OnEnable()
     {
         CustomUpdateManager.Instance.RegisterUpdatable(this);
+        ResetBall();
     }
 
     private void OnDisable()
     {
         if (CustomUpdateManager.Instance != null)
-        {
             CustomUpdateManager.Instance.UnregisterUpdatable(this);
-        }
     }
 
     public void OnUpdate()
@@ -50,12 +50,12 @@ public class BallController : MonoBehaviour, IUpdatable
         {
             transform.position += velocity * Time.deltaTime;
 
+            // Limites de la pantalla
             if (transform.position.x <= -32f)
             {
                 transform.position = new Vector3(-32f, transform.position.y, transform.position.z);
                 velocity.x = -velocity.x;
             }
-
             if (transform.position.x >= 32f)
             {
                 transform.position = new Vector3(32f, transform.position.y, transform.position.z);
@@ -68,9 +68,8 @@ public class BallController : MonoBehaviour, IUpdatable
             }
             if (transform.position.y <= -8f)
             {
+                gameController.ReturnBallToPool(this);
                 SceneAndUIManager.Instance.LoseLife();
-                BallPool.Instance.ReturnBall(gameObject);
-                BallPool.Instance.GetBall();
                 return;
             }
         }
@@ -80,12 +79,11 @@ public class BallController : MonoBehaviour, IUpdatable
             velocity.y = Mathf.Abs(velocity.y);
             float hitPoint = (transform.position.x - paddle.transform.position.x) / 1.5f;
             velocity.x = hitPoint * speed;
-            //audio 
+
             if (bounceClip != null && audioSource != null)
-            {
                 audioSource.PlayOneShot(bounceClip);
-            }
-            SceneAndUIManager.Instance.RegisterPaddleHit(); 
+
+            SceneAndUIManager.Instance.RegisterPaddleHit();
         }
 
         CheckCollisions(bricks, true);
@@ -106,6 +104,7 @@ public class BallController : MonoBehaviour, IUpdatable
         Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
         transform.position = spawnPos;
         isLaunched = false;
+        velocity = Vector3.zero;
     }
     private void DetectBricks()
     {
