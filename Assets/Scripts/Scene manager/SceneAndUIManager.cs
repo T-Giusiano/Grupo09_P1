@@ -102,7 +102,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
         if (lives <= 0)
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene("YouWin");
+            SceneManager.LoadScene("YouLose");
         }
     }
 
