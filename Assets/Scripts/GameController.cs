@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<PowerUpCFIG> configs; //Config
 
-    private List<GameObject> activeBricks = new List<GameObject>();
-    public List<GameObject> ActiveBricks => activeBricks;
+    private List<Brick> activeBricks = new List<Brick>();
+    public List<Brick> ActiveBricks => activeBricks;
 
     [SerializeField] private int powerUpBricksCount;
 
@@ -36,37 +36,45 @@ public class GameController : MonoBehaviour
     private void SpawnBricks()
     {
         GameObject brickPrefab = Resources.Load<GameObject>("Prefabs/Brick");
-        GameObject[] spawnBrick1H = GameObject.FindGameObjectsWithTag("Brick1Spawn"); // 1 hit brick
-        GameObject[] spawnBrick2H = GameObject.FindGameObjectsWithTag("Brick2Spawn"); // 2 hit brick
-        GameObject[] spawnBrickND = GameObject.FindGameObjectsWithTag("Brick3Spawn"); // no hit brick
-        GameObject[] spawnBrickPUP = GameObject.FindGameObjectsWithTag("Brick4Spawn"); // Power Up brick
+
+        GameObject[] spawnBrick1H = GameObject.FindGameObjectsWithTag("Brick1Spawn");
+        GameObject[] spawnBrick2H = GameObject.FindGameObjectsWithTag("Brick2Spawn");
+        GameObject[] spawnBrickND = GameObject.FindGameObjectsWithTag("Brick3Spawn");
+        GameObject[] spawnBrickPUP = GameObject.FindGameObjectsWithTag("Brick4Spawn");
 
         foreach (GameObject spawnPoint in spawnBrick1H)
         {
-            GameObject brick = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            brick.tag = "Brick1H";
+            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
+            Brick brick = new Brick(brickGO, Brick.BrickType.OneHit, this);
+            brick.UpdateVisual();
             activeBricks.Add(brick);
         }
         foreach (GameObject spawnPoint in spawnBrick2H)
         {
-            GameObject brick = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            brick.tag = "Brick2H";
+            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
+            Brick brick = new Brick(brickGO, Brick.BrickType.TwoHit, this);
+            brick.UpdateVisual();
             activeBricks.Add(brick);
         }
         foreach (GameObject spawnPoint in spawnBrickND)
         {
-            GameObject brick = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            brick.tag = "BrickND";
+            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
+            Brick brick = new Brick(brickGO, Brick.BrickType.NonDestructible, this);
+            brick.UpdateVisual();
             activeBricks.Add(brick);
         }
         foreach (GameObject spawnPoint in spawnBrickPUP)
         {
-            GameObject brick = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            brick.tag = "BrickPUP";
+            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
+            Brick brick = new Brick(brickGO, Brick.BrickType.PowerUp, this);
+            brick.UpdateVisual();
             activeBricks.Add(brick);
         }
     }
-
+    public void RemoveBrick(Brick brick)
+    {
+        activeBricks.Remove(brick);
+    }
 
     private void SpawnInitialBall()
     {

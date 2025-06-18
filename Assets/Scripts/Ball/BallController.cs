@@ -122,46 +122,20 @@ public class BallController : MonoBehaviour, IUpdatable
 
         for (int i = bricksList.Count - 1; i >= 0; i--)
         {
-            GameObject obj = bricksList[i];
-            if (obj == null)
+            Brick brick = bricksList[i];
+            if (brick == null || brick.BrickObject == null)
             {
                 bricksList.RemoveAt(i);
                 continue;
             }
 
-            if (IsCollidingWith(obj))
+            if (IsCollidingWith(brick.BrickObject))
             {
                 velocity.y = -velocity.y;
-                ScoreManager.Instance.AddScore(100);
-
-                if (obj.CompareTag("Brick1H"))
-                {
-                    ScoreManager.Instance.CheckBricks();
-                }
-                else if (obj.CompareTag("BrickPUP"))
-                {
-                    if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
-                    {
-                        Vector3 dropPos = obj.transform.position;
-                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
-                        GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
-
-                        PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
-                        powerUpScript.config = multiballConfig;
-                        powerUpScript.powerUpName = "Multiball";
-
-                        PUPManager.Instance.RegisterPowerUp("Multiball");
-                    }
-                }
-                else if (obj.CompareTag("Brick2H"))
-                {
-
-                }
-
-                Destroy(obj);
-                bricksList.RemoveAt(i);
+                brick.OnBallHit();
                 break;
             }
         }
+
     }
 }
