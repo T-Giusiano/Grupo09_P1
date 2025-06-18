@@ -6,8 +6,6 @@ public class ExtraBall : MonoBehaviour, IUpdatable
     private float speed = 15f;
     private Vector3 velocity;
     private GameObject paddle;
-    private List<GameObject> bricks;
-    private List<GameObject> powerUps;
     [SerializeField] private AudioClip bounceClip;
     [SerializeField] private AudioSource audioSource;
     private PowerUpCFIG multiballConfig;
@@ -18,8 +16,6 @@ public class ExtraBall : MonoBehaviour, IUpdatable
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
-        bricks = gameController.ActiveBricks; 
-        DetectPowerUps();
         gameController = FindObjectOfType<GameController>();
     }
 
@@ -70,8 +66,7 @@ public class ExtraBall : MonoBehaviour, IUpdatable
                 audioSource.PlayOneShot(bounceClip);
         }
 
-        CheckCollisions(bricks, true);
-        CheckCollisions(powerUps, false);
+        CheckCollisions();
     }
 
     private void LaunchBall()
@@ -80,11 +75,6 @@ public class ExtraBall : MonoBehaviour, IUpdatable
         float radians = angle * Mathf.Deg2Rad;
         Vector3 direction = new Vector3(Mathf.Sin(radians), Mathf.Cos(radians), 0f).normalized;
         velocity = direction * speed;
-    }
-
-    private void DetectPowerUps()
-    {
-        powerUps = new List<GameObject>(GameObject.FindGameObjectsWithTag("BrickPUP"));
     }
 
     private bool IsCollidingWith(GameObject other)
@@ -100,14 +90,16 @@ public class ExtraBall : MonoBehaviour, IUpdatable
                (Mathf.Abs(ballPos.y - otherPos.y) < (ballSize.y + otherSize.y));
     }
 
-    private void CheckCollisions(List<GameObject> objects, bool isBrick)
+    private void CheckCollisions()
     {
-        for (int i = objects.Count - 1; i >= 0; i--)
+        var bricksList = gameController.ActiveBricks;
+
+        for (int i = bricksList.Count - 1; i >= 0; i--)
         {
-            GameObject obj = objects[i];
+            GameObject obj = bricksList[i];
             if (obj == null)
             {
-                objects.RemoveAt(i);
+                bricksList.RemoveAt(i);
                 continue;
             }
 
@@ -116,15 +108,13 @@ public class ExtraBall : MonoBehaviour, IUpdatable
                 velocity.y = -velocity.y;
                 ScoreManager.Instance.AddScore(100);
 
-                if (isBrick)
+                if (obj.CompareTag("Brick"))
                 {
-                    gameController.ActiveBricks.Remove(obj);
                     ScoreManager.Instance.CheckBricks();
                 }
-                else
+                else if (obj.CompareTag("BrickPUP"))
                 {
-                    string powerUpName = "Multiball";
-                    if (PUPManager.Instance.CanSpawnPowerUp(powerUpName))
+                    if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
                     {
                         Vector3 dropPos = obj.transform.position;
                         GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
@@ -132,14 +122,14 @@ public class ExtraBall : MonoBehaviour, IUpdatable
 
                         PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
                         powerUpScript.config = multiballConfig;
-                        powerUpScript.powerUpName = powerUpName;
+                        powerUpScript.powerUpName = "Multiball";
 
-                        PUPManager.Instance.RegisterPowerUp(powerUpName);
+                        PUPManager.Instance.RegisterPowerUp("Multiball");
                     }
                 }
 
                 Destroy(obj);
-                objects.RemoveAt(i);
+                bricksList.RemoveAt(i);
                 break;
             }
         }

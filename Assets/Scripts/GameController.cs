@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -46,10 +47,16 @@ public class GameController : MonoBehaviour
     }
     private void AssignPowerUpTags(int count)
     {
-        for (int i = 0; i < count; i++)
+        List<GameObject> shuffledBricks = new List<GameObject>(activeBricks);
+        for (int i = 0; i < shuffledBricks.Count; i++)
         {
-            int randomIndex = Random.Range(0, activeBricks.Count);
-            activeBricks[randomIndex].tag = "BrickPUP";
+            int randomIndex = Random.Range(i, shuffledBricks.Count);
+            (shuffledBricks[i], shuffledBricks[randomIndex]) = (shuffledBricks[randomIndex], shuffledBricks[i]);
+        }
+
+        for (int i = 0; i < count && i < shuffledBricks.Count; i++)
+        {
+            shuffledBricks[i].tag = "BrickPUP";
         }
     }
 

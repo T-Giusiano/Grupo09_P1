@@ -7,8 +7,6 @@ public class BallController : MonoBehaviour, IUpdatable
     private Vector3 velocity;
     private bool isLaunched = false;
     private GameObject paddle;
-    private List<GameObject> bricks;
-    private List<GameObject> powerUps;
     private PowerUpCFIG multiballConfig;
 
     private GameController gameController;
@@ -20,9 +18,7 @@ public class BallController : MonoBehaviour, IUpdatable
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
-        DetectPowerUps();
         gameController = FindObjectOfType<GameController>();
-        bricks = gameController.ActiveBricks;
     }
 
     private void OnEnable()
@@ -86,8 +82,7 @@ public class BallController : MonoBehaviour, IUpdatable
             SceneAndUIManager.Instance.RegisterPaddleHit();
         }
 
-        CheckCollisions(bricks, true);
-        CheckCollisions(powerUps, false);
+        CheckCollisions();
     }
 
     private void LaunchBall()
@@ -107,10 +102,6 @@ public class BallController : MonoBehaviour, IUpdatable
         velocity = Vector3.zero;
     }
 
-    private void DetectPowerUps()
-    {
-        powerUps = new List<GameObject>(GameObject.FindGameObjectsWithTag("BrickPUP"));
-    }
 
     private bool IsCollidingWith(GameObject other)
     {
@@ -125,34 +116,34 @@ public class BallController : MonoBehaviour, IUpdatable
                (Mathf.Abs(ballPos.y - otherPos.y) < (ballSize.y + otherSize.y));
     }
 
-    private void CheckCollisions(List<GameObject> objects, bool isBrick)
+    private void CheckCollisions()
     {
-        for (int i = objects.Count - 1; i >= 0; i--)
+        var bricksList = gameController.ActiveBricks;
+
+        for (int i = bricksList.Count - 1; i >= 0; i--)
         {
-            GameObject obj = objects[i];
+            GameObject obj = bricksList[i];
             if (obj == null)
             {
-                objects.RemoveAt(i);
+                bricksList.RemoveAt(i);
                 continue;
             }
 
             if (IsCollidingWith(obj))
             {
                 velocity.y = -velocity.y;
-                SceneAndUIManager.Instance.RegisterBrickDestroyed();
                 ScoreManager.Instance.AddScore(100);
 
-                if (isBrick)
+                if (obj.CompareTag("Brick"))
                 {
-                    gameController.ActiveBricks.Remove(obj);
                     ScoreManager.Instance.CheckBricks();
                 }
-                else
+                else if (obj.CompareTag("BrickPUP"))
                 {
                     if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
                     {
                         Vector3 dropPos = obj.transform.position;
-                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp"); 
+                        GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
                         GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
 
                         PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
@@ -164,7 +155,7 @@ public class BallController : MonoBehaviour, IUpdatable
                 }
 
                 Destroy(obj);
-                objects.RemoveAt(i);
+                bricksList.RemoveAt(i);
                 break;
             }
         }
