@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<PowerUpCFIG> configs; //Config
     public List<GameObject> ActiveBricks => activeBricks;
 
+    [SerializeField] private int powerUpBricksCount;
+
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class GameController : MonoBehaviour
         extraBallPool = new Pool<ExtraBall>(extraBallPrefab, 6, null);
 
         SpawnBricks();
+        AssignPowerUpTags(powerUpBricksCount);
     }
 
     private void Update()
@@ -41,6 +44,15 @@ public class GameController : MonoBehaviour
             activeBricks.Add(brick);
         }
     }
+    private void AssignPowerUpTags(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(0, activeBricks.Count);
+            activeBricks[randomIndex].tag = "BrickPUP";
+        }
+    }
+
 
     private void SpawnInitialBall()
     {
