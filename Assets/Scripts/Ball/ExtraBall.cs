@@ -18,7 +18,7 @@ public class ExtraBall : MonoBehaviour, IUpdatable
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
-        DetectBricks();
+        bricks = gameController.ActiveBricks; 
         DetectPowerUps();
         gameController = FindObjectOfType<GameController>();
     }
@@ -82,11 +82,6 @@ public class ExtraBall : MonoBehaviour, IUpdatable
         velocity = direction * speed;
     }
 
-    private void DetectBricks()
-    {
-        bricks = new List<GameObject>(GameObject.FindGameObjectsWithTag("Brick"));
-    }
-
     private void DetectPowerUps()
     {
         powerUps = new List<GameObject>(GameObject.FindGameObjectsWithTag("BrickPUP"));
@@ -123,6 +118,7 @@ public class ExtraBall : MonoBehaviour, IUpdatable
 
                 if (isBrick)
                 {
+                    gameController.ActiveBricks.Remove(obj);
                     ScoreManager.Instance.CheckBricks();
                 }
                 else

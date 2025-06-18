@@ -3,26 +3,22 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [Header("Ball Pools")]
-    private Pool<BallController> ballPool;
-    private Pool<ExtraBall> extraBallPool;
+    private Pool<BallController> ballPool; //BallPool
+    private Pool<ExtraBall> extraBallPool; //ExtraBallPool
 
-    [Header("Bricks")]
-    private List<GameObject> activeBricks = new List<GameObject>();
+    private List<GameObject> activeBricks = new List<GameObject>(); //BrickPlaces
 
-    [Header("Configs")]
-    [SerializeField] private List<PowerUpCFIG> configs;
+    [SerializeField] private List<PowerUpCFIG> configs; //Config
+    public List<GameObject> ActiveBricks => activeBricks;
+
 
     private void Awake()
     {
-        // Inicializar PowerUp configs
         PUPManager.Instance.Initialize(configs);
 
-        // Cargar prefabs desde Resources
         BallController ballPrefab = Resources.Load<BallController>("Prefabs/Ball");
         ExtraBall extraBallPrefab = Resources.Load<ExtraBall>("Prefabs/ExtraBall");
 
-        // Crear pools
         ballPool = new Pool<BallController>(ballPrefab, 3, null);
         extraBallPool = new Pool<ExtraBall>(extraBallPrefab, 6, null);
 

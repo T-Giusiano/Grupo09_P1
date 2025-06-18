@@ -20,9 +20,9 @@ public class BallController : MonoBehaviour, IUpdatable
     {
         multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
         paddle = GameObject.Find("Paddle");
-        DetectBricks();
         DetectPowerUps();
         gameController = FindObjectOfType<GameController>();
+        bricks = gameController.ActiveBricks;
     }
 
     private void OnEnable()
@@ -106,10 +106,6 @@ public class BallController : MonoBehaviour, IUpdatable
         isLaunched = false;
         velocity = Vector3.zero;
     }
-    private void DetectBricks()
-    {
-        bricks = new List<GameObject>(GameObject.FindGameObjectsWithTag("Brick"));
-    }
 
     private void DetectPowerUps()
     {
@@ -147,7 +143,10 @@ public class BallController : MonoBehaviour, IUpdatable
                 ScoreManager.Instance.AddScore(100);
 
                 if (isBrick)
+                {
+                    gameController.ActiveBricks.Remove(obj);
                     ScoreManager.Instance.CheckBricks();
+                }
                 else
                 {
                     if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
@@ -156,9 +155,8 @@ public class BallController : MonoBehaviour, IUpdatable
                         GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp"); 
                         GameObject powerUpInstance = Instantiate(powerUpDrop, dropPos, Quaternion.identity);
 
-                        // Configuramos el power-up
                         PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
-                        powerUpScript.config = multiballConfig;  // Este valor tiene que estar asignado en el inspector
+                        powerUpScript.config = multiballConfig;
                         powerUpScript.powerUpName = "Multiball";
 
                         PUPManager.Instance.RegisterPowerUp("Multiball");
