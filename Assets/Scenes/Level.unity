@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 96537435}
   m_Layer: 0
   m_Name: Brick (5)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1201,7 +1201,7 @@ GameObject:
   - component: {fileID: 710825380}
   m_Layer: 0
   m_Name: Brick (7)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1232,7 +1232,7 @@ GameObject:
   - component: {fileID: 904034804}
   m_Layer: 0
   m_Name: Brick (4)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2530,7 +2530,7 @@ GameObject:
   - component: {fileID: 1476041334}
   m_Layer: 0
   m_Name: Brick (1)
-  m_TagString: BrickSpawn
+  m_TagString: Brick2Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2561,7 +2561,7 @@ GameObject:
   - component: {fileID: 1517081018}
   m_Layer: 0
   m_Name: Brick (2)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3155,6 +3155,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configs:
   - {fileID: 11400000, guid: d8c259c5b26224048a37d0e82d66ed21, type: 2}
+  activeBricks:
+  - {fileID: 1476041333}
+  - {fileID: 1517081017}
+  - {fileID: 1833554337}
+  - {fileID: 904034803}
+  - {fileID: 96537434}
+  - {fileID: 1818984254}
+  - {fileID: 710825379}
   powerUpBricksCount: 2
 --- !u!114 &1809899033
 MonoBehaviour:
@@ -3179,7 +3187,7 @@ GameObject:
   - component: {fileID: 1818984255}
   m_Layer: 0
   m_Name: Brick (6)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3344,7 +3352,7 @@ GameObject:
   - component: {fileID: 1833554338}
   m_Layer: 0
   m_Name: Brick (3)
-  m_TagString: BrickSpawn
+  m_TagString: Brick1Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

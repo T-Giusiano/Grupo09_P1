@@ -134,7 +134,7 @@ public class BallController : MonoBehaviour, IUpdatable
                 velocity.y = -velocity.y;
                 ScoreManager.Instance.AddScore(100);
 
-                if (obj.CompareTag("Brick"))
+                if (obj.CompareTag("Brick1H"))
                 {
                     ScoreManager.Instance.CheckBricks();
                 }
@@ -152,6 +152,10 @@ public class BallController : MonoBehaviour, IUpdatable
 
                         PUPManager.Instance.RegisterPowerUp("Multiball");
                     }
+                }
+                else if (obj.CompareTag("Brick2H"))
+                {
+
                 }
 
                 Destroy(obj);

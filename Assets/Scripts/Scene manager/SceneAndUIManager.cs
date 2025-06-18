@@ -7,7 +7,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 {
     public static SceneAndUIManager Instance;
 
-    private int lives = 3;
+    private int lives = 20;
     private int paddleHits = 0;
     private int blocksRemaining = 0;
     private int score = 0;
@@ -83,7 +83,11 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 
     private void CountBlocksAtStart()
     {
-        blocksRemaining = GameObject.FindGameObjectsWithTag("Brick").Length;
+        int bricks1 = GameObject.FindGameObjectsWithTag("Brick1H").Length;
+        int bricks2 = GameObject.FindGameObjectsWithTag("Brick2H").Length;
+        int bricks3 = GameObject.FindGameObjectsWithTag("BrickND").Length;
+        int bricks4 = GameObject.FindGameObjectsWithTag("BrickPUP").Length;
+        blocksRemaining = bricks1 + bricks2 + bricks3 + bricks4;
     }
 
     private void UpdateAllUI()
@@ -110,18 +114,6 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
     {
         paddleHits++;
         UpdateHitsUI();
-    }
-
-    public void RegisterBrickDestroyed()
-    {
-        blocksRemaining--;
-        UpdateBlocksUI();
-
-        if (blocksRemaining <= 0)
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene("YouWin");
-        }
     }
 
     public void AddScore(int amount)
