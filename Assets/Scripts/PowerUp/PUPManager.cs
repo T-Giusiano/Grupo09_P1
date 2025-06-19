@@ -20,6 +20,12 @@ public class PUPManager
 
     public void Initialize(List<PowerUpCFIG> configs)
     {
+        if (configs == null)
+        {
+            Debug.LogError("No se cargaron configs de powerups en GameController.");
+            return;
+        }
+
         powerUpConfigs = configs;
         spawnedCount.Clear();
 

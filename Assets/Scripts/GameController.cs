@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -18,6 +18,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioClip bounceClip;
 
     private List<IUpdatable> activeBalls = new List<IUpdatable>();
+
+    [SerializeField] private List<LevelConfig> levelConfigs;
+
+    [SerializeField] private int currentLevel = 0;
 
     private void Awake()
     {
@@ -43,24 +47,29 @@ public class GameController : MonoBehaviour
 
     private void SpawnBricks()
     {
-        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick1Spawn"))
+        Transform levelParent = GameObject.Find("Level").transform;
+        Transform[] spawns = levelParent.GetComponentsInChildren<Transform>();
+
+        int[] levelData = levelConfigs[currentLevel].bricks;
+
+        if (levelData.Length != spawns.Length - 1)
         {
-            CrearBrick(spawn.transform.position, Brick.BrickType.OneHit);
-            bricksToWin++;
+            Debug.LogError("LevelData y cantidad de spawn points no coinciden.");
+            return;
         }
-        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick2Spawn"))
+
+        for (int i = 1; i < spawns.Length; i++)
         {
-            CrearBrick(spawn.transform.position, Brick.BrickType.TwoHit);
-            bricksToWin++;
-        }
-        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick3Spawn"))
-        {
-            CrearBrick(spawn.transform.position, Brick.BrickType.NonDestructible);
-        }
-        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick4Spawn"))
-        {
-            CrearBrick(spawn.transform.position, Brick.BrickType.PowerUp);
-            bricksToWin++;
+            int type = levelData[i - 1];
+            if (type == 4)
+                continue;
+
+            CrearBrick(spawns[i].position, (Brick.BrickType)type);
+
+            if (type != 2)
+            {
+                bricksToWin++;
+            }
         }
     }
 

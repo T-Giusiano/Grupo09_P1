@@ -41,17 +41,12 @@ public class ScoreManager : MonoBehaviour
     {
         bricksLeft = gameController.BricksToWin;
 
-        if (bricksLeft <= 0)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
-    
+        //if (bricksLeft <= 0)
+       // {
+     //       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+   //     }
 
-Debug.Log("Bricks left: " + bricksLeft);
-    }
 
-    private void WinGame()
-    {
-        SceneManager.LoadScene("YouWin");
+        Debug.Log("Bricks left: " + bricksLeft);
     }
 }

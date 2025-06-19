@@ -83,11 +83,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 
     private void CountBlocksAtStart()
     {
-        int bricks1 = GameObject.FindGameObjectsWithTag("Brick1H").Length;
-        int bricks2 = GameObject.FindGameObjectsWithTag("Brick2H").Length;
-        int bricks3 = GameObject.FindGameObjectsWithTag("BrickND").Length;
-        int bricks4 = GameObject.FindGameObjectsWithTag("BrickPUP").Length;
-        blocksRemaining = bricks1 + bricks2 + bricks3 + bricks4;
+
     }
 
     private void UpdateAllUI()
