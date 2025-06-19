@@ -21,7 +21,6 @@ public class ScoreManager : MonoBehaviour
             scoreText = textObject.GetComponent<TMP_Text>();
 
         UpdateScoreUI();
-        CheckBricks();
         Debug.Log(bricksLeft);
     }
 

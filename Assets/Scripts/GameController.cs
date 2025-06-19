@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System;
+using UnityEditor;
+
 
 public class GameController : MonoBehaviour
 {
@@ -16,15 +21,18 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip bounceClip;
+    [SerializeField] AssetReferenceGameObject level;
 
     private List<IUpdatable> activeBalls = new List<IUpdatable>();
 
     [SerializeField] private List<LevelConfig> levelConfigs;
 
-    [SerializeField] private int currentLevel = 0;
+    [SerializeField] private int currentLevel = 1;
+
 
     private void Awake()
     {
+        level.LoadAssetAsync().Completed += OnAddressableLoaded;
         PUPManager.Instance.Initialize(configs);
 
         GameObject ballPrefab = Resources.Load<GameObject>("Prefabs/Ball");
@@ -32,11 +40,26 @@ public class GameController : MonoBehaviour
 
         ballPool = new GameObjectPool(ballPrefab, 3, null);
         extraBallPool = new GameObjectPool(extraBallPrefab, 6, null);
-
         SpawnInitialBall();
-        SpawnBricks();
     }
+    private void OnAddressableLoaded(AsyncOperationHandle<GameObject> handle)
+    {
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            GameObject levelInstance = Instantiate(handle.Result);
+            levelInstance.SetActive(true);
 
+
+            Transform levelParent = levelInstance.transform;
+
+            Debug.Log("Prefab instanciado correctamente como 'Level'");
+            SpawnBricks(levelParent);
+        }
+        else
+        {
+            Debug.LogError("Loading Asset Failed");
+        }
+    }
     private void Update()
     {
         for (int i = activeBalls.Count - 1; i >= 0; i--)
@@ -45,12 +68,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void SpawnBricks()
+    private void SpawnBricks(Transform levelParent)
     {
-        Transform levelParent = GameObject.Find("Level").transform;
-        Transform[] spawns = levelParent.GetComponentsInChildren<Transform>();
-
-        int[] levelData = levelConfigs[currentLevel].bricks;
+        Transform[] spawns = levelParent.GetComponentsInChildren<Transform>(true);
+    int[] levelData = levelConfigs[currentLevel].bricks;
 
         if (levelData.Length != spawns.Length - 1)
         {
@@ -58,7 +79,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        for (int i = 1; i < spawns.Length; i++)
+        for (int i = 1; i < spawns.Length; i++) // saltamos el parent
         {
             int type = levelData[i - 1];
             if (type == 4)
@@ -71,6 +92,8 @@ public class GameController : MonoBehaviour
                 bricksToWin++;
             }
         }
+
+        Debug.Log($"Se generaron {bricksToWin} ladrillos.");
     }
 
     private void CrearBrick(Vector3 pos, Brick.BrickType type)

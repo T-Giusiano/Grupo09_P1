@@ -44,4 +44,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/YouLose.unity
     guid: c90deda2954cd0047bb78af7537b0486
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: a636a29bacab0e84c9d147f7aca9ed76, type: 2}
