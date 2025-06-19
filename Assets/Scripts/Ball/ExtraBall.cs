@@ -67,7 +67,6 @@ public class ExtraBall : IUpdatable
         float radians = angle * Mathf.Deg2Rad;
         Vector3 direction = new Vector3(Mathf.Sin(radians), Mathf.Cos(radians), 0f).normalized;
         velocity = direction * speed;
-        Debug.Log($"ExtraBall lanzada con velocidad: {velocity}");
     }
 
     private bool IsCollidingWith(GameObject other)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class GameController : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<PowerUpCFIG> configs;
 
     private List<Brick> activeBricks = new List<Brick>();
+    private int bricksToWin = 0;
     public List<Brick> ActiveBricks => activeBricks;
+    public int BricksToWin => bricksToWin;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip bounceClip;
@@ -40,16 +43,25 @@ public class GameController : MonoBehaviour
 
     private void SpawnBricks()
     {
-        GameObject brickPrefab = Resources.Load<GameObject>("Prefabs/Brick");
-
         foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick1Spawn"))
+        {
             CrearBrick(spawn.transform.position, Brick.BrickType.OneHit);
+            bricksToWin++;
+        }
         foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick2Spawn"))
+        {
             CrearBrick(spawn.transform.position, Brick.BrickType.TwoHit);
+            bricksToWin++;
+        }
         foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick3Spawn"))
+        {
             CrearBrick(spawn.transform.position, Brick.BrickType.NonDestructible);
+        }
         foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick4Spawn"))
+        {
             CrearBrick(spawn.transform.position, Brick.BrickType.PowerUp);
+            bricksToWin++;
+        }
     }
 
     private void CrearBrick(Vector3 pos, Brick.BrickType type)
@@ -61,7 +73,12 @@ public class GameController : MonoBehaviour
         activeBricks.Add(brick);
     }
 
-    public void RemoveBrick(Brick brick) => activeBricks.Remove(brick);
+    public void RemoveBrick(Brick brick)
+    {
+        activeBricks.Remove(brick);
+        bricksToWin--;
+        ScoreManager.Instance.CheckBricks();
+    }
 
     private void SpawnInitialBall()
     {

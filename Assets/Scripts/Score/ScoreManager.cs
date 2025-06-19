@@ -21,14 +21,14 @@ public class ScoreManager : MonoBehaviour
             scoreText = textObject.GetComponent<TMP_Text>();
 
         UpdateScoreUI();
+        CheckBricks();
+        Debug.Log(bricksLeft);
     }
 
     public void AddScore(int points)
     {
         score += points;
-        bricksLeft--;
         UpdateScoreUI();
-        CheckBricks();
     }
 
     private void UpdateScoreUI()
@@ -39,12 +39,13 @@ public class ScoreManager : MonoBehaviour
 
     public void CheckBricks()
     {
-        bricksLeft = gameController.ActiveBricks.Count;
-        if (bricksLeft <= 1)
+        bricksLeft = gameController.BricksToWin;
+
+        if (bricksLeft <= 0)
         {
             WinGame();
         }
-        Debug.Log(bricksLeft);
+        Debug.Log("Bricks left: " + bricksLeft);
     }
 
     private void WinGame()

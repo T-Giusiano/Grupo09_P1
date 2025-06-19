@@ -24,7 +24,6 @@ public class BallController : IUpdatable
     {
         if (!isLaunched)
         {
-            // Seguir al paddle en X mientras no esté lanzada
             Vector3 pos = GameObject.transform.position;
             pos.x = paddle.transform.position.x;
             GameObject.transform.position = pos;

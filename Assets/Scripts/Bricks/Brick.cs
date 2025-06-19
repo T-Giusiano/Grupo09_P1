@@ -3,6 +3,7 @@ using UnityEngine;
 public class Brick
 {
     public enum BrickType { OneHit, TwoHit, NonDestructible, PowerUp }
+    public BrickType brickType;
     public BrickType Type { get; private set; }
     public int HitsRemaining { get; private set; }
     public GameObject BrickObject { get; private set; }
@@ -52,17 +53,16 @@ public class Brick
         {
             case BrickType.OneHit:
                 ScoreManager.Instance.AddScore(100);
-                ScoreManager.Instance.CheckBricks();
                 break;
 
             case BrickType.TwoHit:
                 ScoreManager.Instance.AddScore(150);
-                ScoreManager.Instance.CheckBricks();
                 break;
 
             case BrickType.PowerUp:
                 if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
                 {
+                    ScoreManager.Instance.AddScore(200);
                     Vector3 dropPos = BrickObject.transform.position;
                     GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
                     GameObject powerUpInstance = Object.Instantiate(powerUpDrop, dropPos, Quaternion.identity);
@@ -76,7 +76,6 @@ public class Brick
                 }
                 break;
         }
-
         gameController.RemoveBrick(this);
         Object.Destroy(BrickObject);
     }
