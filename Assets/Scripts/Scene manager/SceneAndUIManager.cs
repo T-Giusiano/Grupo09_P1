@@ -17,6 +17,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
     private TMP_Text blocksText;
     private TMP_Text scoreText;
 
+    GameController gameController;
     public Canvas PauseCanva;
 
     private bool isInitialized = false;
@@ -24,6 +25,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
     private void OnEnable()
     {
         Instance = this;
+        gameController = FindAnyObjectByType<GameController>();
         TryRegister();
     }
 
@@ -83,7 +85,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 
     private void CountBlocksAtStart()
     {
-
+        blocksRemaining = gameController.ActiveBricks.Count;
     }
 
     private void UpdateAllUI()
