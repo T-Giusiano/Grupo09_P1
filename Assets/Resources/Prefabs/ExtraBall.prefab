@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8726813661166076810}
   - component: {fileID: 1852433111038725737}
   - component: {fileID: 3956666269834607238}
-  - component: {fileID: 7212505961528032472}
   - component: {fileID: -480574381978666669}
   - component: {fileID: 6178071352427603789}
   m_Layer: 0
@@ -86,20 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7212505961528032472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9098466718935468158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126024560ee1f584c89d861099f1b76e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bounceClip: {fileID: 8300000, guid: 1daa847026fbcaf498c4295d1c939775, type: 3}
-  audioSource: {fileID: 6178071352427603789}
 --- !u!114 &-480574381978666669
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,103 +1,104 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    private Pool<BallController> ballPool; //BallPool
-    private Pool<ExtraBall> extraBallPool; //ExtraBallPool
+    private GameObjectPool ballPool;
+    private GameObjectPool extraBallPool;
 
-    [SerializeField] private List<PowerUpCFIG> configs; //Config
+    [SerializeField] private List<PowerUpCFIG> configs;
 
     private List<Brick> activeBricks = new List<Brick>();
     public List<Brick> ActiveBricks => activeBricks;
 
-    [SerializeField] private int powerUpBricksCount;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip bounceClip;
 
+    private List<IUpdatable> activeBalls = new List<IUpdatable>();
 
     private void Awake()
     {
         PUPManager.Instance.Initialize(configs);
 
-        BallController ballPrefab = Resources.Load<BallController>("Prefabs/Ball");
-        ExtraBall extraBallPrefab = Resources.Load<ExtraBall>("Prefabs/ExtraBall");
+        GameObject ballPrefab = Resources.Load<GameObject>("Prefabs/Ball");
+        GameObject extraBallPrefab = Resources.Load<GameObject>("Prefabs/ExtraBall");
 
-        ballPool = new Pool<BallController>(ballPrefab, 3, null);
-        extraBallPool = new Pool<ExtraBall>(extraBallPrefab, 6, null);
+        ballPool = new GameObjectPool(ballPrefab, 3, null);
+        extraBallPool = new GameObjectPool(extraBallPrefab, 6, null);
 
+        SpawnInitialBall();
         SpawnBricks();
     }
 
     private void Update()
     {
-        CustomUpdateManager.Instance.CustomUpdate();
+        for (int i = activeBalls.Count - 1; i >= 0; i--)
+        {
+            activeBalls[i].OnUpdate();
+        }
     }
 
     private void SpawnBricks()
     {
         GameObject brickPrefab = Resources.Load<GameObject>("Prefabs/Brick");
 
-        GameObject[] spawnBrick1H = GameObject.FindGameObjectsWithTag("Brick1Spawn");
-        GameObject[] spawnBrick2H = GameObject.FindGameObjectsWithTag("Brick2Spawn");
-        GameObject[] spawnBrickND = GameObject.FindGameObjectsWithTag("Brick3Spawn");
-        GameObject[] spawnBrickPUP = GameObject.FindGameObjectsWithTag("Brick4Spawn");
+        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick1Spawn"))
+            CrearBrick(spawn.transform.position, Brick.BrickType.OneHit);
+        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick2Spawn"))
+            CrearBrick(spawn.transform.position, Brick.BrickType.TwoHit);
+        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick3Spawn"))
+            CrearBrick(spawn.transform.position, Brick.BrickType.NonDestructible);
+        foreach (var spawn in GameObject.FindGameObjectsWithTag("Brick4Spawn"))
+            CrearBrick(spawn.transform.position, Brick.BrickType.PowerUp);
+    }
 
-        foreach (GameObject spawnPoint in spawnBrick1H)
-        {
-            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            Brick brick = new Brick(brickGO, Brick.BrickType.OneHit, this);
-            brick.UpdateVisual();
-            activeBricks.Add(brick);
-        }
-        foreach (GameObject spawnPoint in spawnBrick2H)
-        {
-            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            Brick brick = new Brick(brickGO, Brick.BrickType.TwoHit, this);
-            brick.UpdateVisual();
-            activeBricks.Add(brick);
-        }
-        foreach (GameObject spawnPoint in spawnBrickND)
-        {
-            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            Brick brick = new Brick(brickGO, Brick.BrickType.NonDestructible, this);
-            brick.UpdateVisual();
-            activeBricks.Add(brick);
-        }
-        foreach (GameObject spawnPoint in spawnBrickPUP)
-        {
-            GameObject brickGO = Instantiate(brickPrefab, spawnPoint.transform.position, Quaternion.identity);
-            Brick brick = new Brick(brickGO, Brick.BrickType.PowerUp, this);
-            brick.UpdateVisual();
-            activeBricks.Add(brick);
-        }
-    }
-    public void RemoveBrick(Brick brick)
+    private void CrearBrick(Vector3 pos, Brick.BrickType type)
     {
-        activeBricks.Remove(brick);
+        var prefab = Resources.Load<GameObject>("Prefabs/Brick");
+        var go = Instantiate(prefab, pos, Quaternion.identity);
+        var brick = new Brick(go, type, this);
+        brick.UpdateVisual();
+        activeBricks.Add(brick);
     }
+
+    public void RemoveBrick(Brick brick) => activeBricks.Remove(brick);
 
     private void SpawnInitialBall()
     {
-        BallController ball = ballPool.Get();
-        ball.gameObject.SetActive(true);
+        GameObject ballGO = ballPool.Get();
+
+        BallController ball = new BallController(ballGO, audioSource, bounceClip, this);
+        ball.GameObject.SetActive(true);
         ball.ResetBall();
+
+        activeBalls.Add(ball);
     }
 
     public void ReturnBallToPool(BallController ball)
     {
-        ballPool.ReturnToPool(ball);
-        SpawnInitialBall();
-    }
+        ball.GameObject.SetActive(false);
+        activeBalls.Remove(ball);
+        ballPool.ReturnToPool(ball.GameObject);
 
-    public void ReturnExtraBallToPool(ExtraBall ball)
-    {
-        extraBallPool.ReturnToPool(ball);
+        SpawnInitialBall();
     }
 
     public void SpawnExtraBall(Vector3 position)
     {
-        ExtraBall ball = extraBallPool.Get();
-        ball.transform.position = position;
-        ball.gameObject.SetActive(true);
+        GameObject ballGO = extraBallPool.Get();
+        ballGO.transform.position = position;
+        ballGO.SetActive(true);
+
+        ExtraBall ball = new ExtraBall(ballGO, audioSource, bounceClip, this);
+        ball.LaunchBall();
+
+        activeBalls.Add(ball);
+    }
+
+    public void ReturnExtraBallToPool(ExtraBall ball)
+    {
+        ball.GameObject.SetActive(false);
+        activeBalls.Remove(ball);
+        extraBallPool.ReturnToPool(ball.GameObject);
     }
 }

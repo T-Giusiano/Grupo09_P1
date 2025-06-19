@@ -5,10 +5,14 @@ public class PowerUp : MonoBehaviour, IUpdatable
     private float fallSpeed = 3f;
     public PowerUpCFIG config;
     public string powerUpName = "Multiball";
-
+    private GameController gameController;
     void OnEnable()
     {
         CustomUpdateManager.Instance.RegisterUpdatable(this);
+        if (gameController == null)
+        {
+            gameController = GameObject.FindObjectOfType<GameController>();
+        }
     }
 
     void OnDisable()
@@ -34,8 +38,7 @@ public class PowerUp : MonoBehaviour, IUpdatable
             Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
             for (int i = 0; i < config.ballsToSpawn; i++)
             {
-                GameObject extraBall = Resources.Load<GameObject>("Prefabs/ExtraBall");
-                Instantiate(extraBall, spawnPos, Quaternion.identity);
+                gameController.SpawnExtraBall(spawnPos);
             }
             GameObject.Destroy(gameObject);
         }
