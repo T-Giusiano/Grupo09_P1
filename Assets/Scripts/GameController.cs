@@ -50,8 +50,6 @@ public class GameController : MonoBehaviour
 
 
             Transform levelParent = levelInstance.transform;
-
-            Debug.Log("Prefab instanciado correctamente como 'Level'");
             SpawnBricks(levelParent);
         }
         else
@@ -78,7 +76,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        for (int i = 1; i < spawns.Length; i++) // saltamos el parent
+        for (int i = 1; i < spawns.Length; i++)
         {
             int type = levelData[i - 1];
             if (type == 4)
@@ -91,7 +89,7 @@ public class GameController : MonoBehaviour
                 bricksToWin++;
             }
         }
-
+        SceneAndUIManager.Instance.UpdateBlocksUI();
         Debug.Log($"Se generaron {bricksToWin} ladrillos.");
     }
 
@@ -109,6 +107,7 @@ public class GameController : MonoBehaviour
         activeBricks.Remove(brick);
         bricksToWin--;
         ScoreManager.Instance.CheckBricks();
+        SceneAndUIManager.Instance.UpdateBlocksUI();
     }
 
     private void SpawnInitialBall()

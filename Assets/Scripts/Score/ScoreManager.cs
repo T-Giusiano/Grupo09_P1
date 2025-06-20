@@ -21,7 +21,6 @@ public class ScoreManager : MonoBehaviour
             scoreText = textObject.GetComponent<TMP_Text>();
 
         UpdateScoreUI();
-        Debug.Log(bricksLeft);
     }
 
     public void AddScore(int points)
@@ -44,8 +43,5 @@ public class ScoreManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-
-
-        Debug.Log("Bricks left: " + bricksLeft);
     }
 }

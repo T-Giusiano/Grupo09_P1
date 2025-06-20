@@ -76,16 +76,18 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
         blocksText = GameObject.Find("BlocksText")?.GetComponent<TMP_Text>();
         scoreText = GameObject.Find("ScoreText")?.GetComponent<TMP_Text>();
 
-        if (PauseCanva != null)
-            PauseCanva.gameObject.SetActive(false);
-
         CountBlocksAtStart();
         UpdateAllUI();
+
+        if (PauseCanva != null)
+        {
+            PauseCanva.gameObject.SetActive(false);
+        }
     }
 
     private void CountBlocksAtStart()
     {
-        blocksRemaining = gameController.ActiveBricks.Count;
+        blocksRemaining = gameController.BricksToWin;
     }
 
     private void UpdateAllUI()
@@ -132,8 +134,9 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
             hitsText.text = "Golpes: " + paddleHits;
     }
 
-    private void UpdateBlocksUI()
+    public void UpdateBlocksUI()
     {
+        blocksRemaining = gameController.BricksToWin;
         if (blocksText != null)
             blocksText.text = "Bloques: " + blocksRemaining;
     }
