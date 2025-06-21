@@ -34,12 +34,25 @@ public class GameController : MonoBehaviour
         level.LoadAssetAsync().Completed += OnAddressableLoaded;
         PUPManager.Instance.Initialize(configs);
 
+        //Referencias de prefabs
         GameObject ballPrefab = Resources.Load<GameObject>("Prefabs/Ball");
         GameObject extraBallPrefab = Resources.Load<GameObject>("Prefabs/ExtraBall");
+        GameObject paddlePrefab = Resources.Load<GameObject>("Prefabs/ExtraBall");
+        GameObject[] marginsPrefab = GameObject.FindGameObjectsWithTag("Margin");
 
+        //Inicio de Pools
         ballPool = new GameObjectPool(ballPrefab, 3, null);
         extraBallPool = new GameObjectPool(extraBallPrefab, 6, null);
+
+        //Instanciar Ball principal
         SpawnInitialBall();
+
+        //Set de colores de prefabs
+        ColorController.SetColorByTag(paddlePrefab);
+        foreach (GameObject margin in marginsPrefab)
+        {
+            ColorController.SetColorByTag(margin);
+        }
     }
     private void OnAddressableLoaded(AsyncOperationHandle<GameObject> handle)
     {
@@ -119,6 +132,7 @@ public class GameController : MonoBehaviour
         ball.ResetBall();
 
         activeBalls.Add(ball);
+        ColorController.SetColorByTag(ballGO);
     }
 
     public void ReturnBallToPool(BallController ball)
@@ -140,6 +154,7 @@ public class GameController : MonoBehaviour
         ball.LaunchBall();
 
         activeBalls.Add(ball);
+        ColorController.SetColorByTag(ballGO);
     }
 
     public void ReturnExtraBallToPool(ExtraBall ball)

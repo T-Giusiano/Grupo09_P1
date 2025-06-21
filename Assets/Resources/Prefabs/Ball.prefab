@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 1061872147838632542}
   - component: {fileID: 2552122853700409}
   - component: {fileID: 211815498179618912}
-  - component: {fileID: -5204093149711096918}
   - component: {fileID: 237529184370111910}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,6 +63,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6f8eca726f4aaa549aad02b14142bcc7, type: 2}
+  - {fileID: 2100000, guid: 0989de6a9ecc76b4983ecef955d034ca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,19 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-5204093149711096918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7888233459902403905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 851cce3f56063534bbd85932025475fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 0, b: 0, a: 0}
 --- !u!82 &237529184370111910
 AudioSource:
   m_ObjectHideFlags: 0

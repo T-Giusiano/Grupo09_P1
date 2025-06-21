@@ -2,21 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorController : MonoBehaviour
+public class ColorController
 {
-    MaterialPropertyBlock propertyBlock;
-    public Color color;
+    private static MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
-    private void Awake()
+    public static void SetColorByTag(GameObject obj)
     {
-        if (propertyBlock == null)
-            propertyBlock = new MaterialPropertyBlock();
+        if (obj.TryGetComponent<Renderer>(out Renderer renderer))
+        {
+            Color colorToApply = Color.white;
 
-        Renderer renderer = GetComponent<Renderer>();
+            switch (obj.tag)
+            {
+                case "Paddle":
+                    colorToApply = Color.blue;
+                    break;
+                case "Ball":
+                    colorToApply = Color.red;
+                    break;
+                case "ExtraBall":
+                    colorToApply = Color.green;
+                    break;
+                case "Margin":
+                    colorToApply = Color.black;
+                    break;
+                case "LoseMargin":
+                    colorToApply = Color.black;
+                    break;
+                default:
+                    colorToApply = Color.white;
+                    break;
+            }
 
-        propertyBlock.SetColor("_Color", color);
-
-        renderer.SetPropertyBlock(propertyBlock);
-
+            propertyBlock.SetColor("_Color", colorToApply);
+            renderer.SetPropertyBlock(propertyBlock);
+        }
     }
 }

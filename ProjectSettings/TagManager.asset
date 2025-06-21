@@ -9,6 +9,9 @@ TagManager:
   - BrickPUP
   - Margin
   - LoseMargin
+  - Paddle
+  - Ball
+  - ExtraBall
   layers:
   - Default
   - TransparentFX
