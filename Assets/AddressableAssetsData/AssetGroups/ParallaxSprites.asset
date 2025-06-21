@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ParallaxSprites
+  m_EditorClassIdentifier: 
+  m_GroupName: ParallaxSprites
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 4a5bbaef8155d8349b6624925a60c499
+  m_SerializeEntries:
+  - m_GUID: 448e5da25f6844d4aacbc996adf9cc86
+    m_Address: Prefabs/Parallax/ParallaxLayer3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca772a2c13be89547ae04fbf7c8fa9f8
+    m_Address: Prefabs/Parallax/ParallaxLayer1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c82ee7d1e734f74cac33bd3d4386967
+    m_Address: Prefabs/Parallax/ParallaxLayer2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b5323c00f23d9e341aeac2c25ddd3ad9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 349455453e69dcf4497186a8c4b79677, type: 2}
+    - {fileID: 11400000, guid: 007de1c7afb81454c977e42e20f6d775, type: 2}

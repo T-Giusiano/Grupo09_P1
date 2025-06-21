@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cc25a6278f8457f449cec45404ba3dd8, type: 2}
+  - {fileID: 2100000, guid: 0989de6a9ecc76b4983ecef955d034ca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -96,4 +96,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5827ddc20cbeb488de4f47cd1a3239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paddlePrefab: {fileID: 0}
+  paddleColor: {r: 0.06132078, g: 0.08834938, b: 1, a: 1}
+  parallaxAddresses:
+  - Prefabs/Parallax/ParallaxLayer3
+  - Prefabs/Parallax/ParallaxLayer1
+  - Prefabs/Parallax/ParallaxLayer2
+  parallaxFactors:
+  - 0.02
+  - 0.05
+  - 0.1
+  parallaxParent: {fileID: 0}
