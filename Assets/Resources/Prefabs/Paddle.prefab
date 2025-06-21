@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7834485107519885294}
   - component: {fileID: 1802992952883815991}
   - component: {fileID: 1783922013527252887}
-  - component: {fileID: 1762168742070557829}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Paddle
@@ -84,25 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1762168742070557829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083019871356487718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f5827ddc20cbeb488de4f47cd1a3239, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paddleColor: {r: 0.06132078, g: 0.08834938, b: 1, a: 1}
-  parallaxAddresses:
-  - Prefabs/Parallax/ParallaxLayer3
-  - Prefabs/Parallax/ParallaxLayer1
-  - Prefabs/Parallax/ParallaxLayer2
-  parallaxFactors:
-  - 0.02
-  - 0.05
-  - 0.1
-  parallaxParent: {fileID: 0}

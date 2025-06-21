@@ -5,12 +5,9 @@ public class Paddle : IUpdatable
     private GameObject paddleObject;
     private float speed = 20f;
 
-    public Paddle(GameObject instance, Color color)
+    public Paddle(GameObject instance)
     {
         this.paddleObject = instance;
-
-        // Aplica el color al crear la paleta
-        ColorUtils.SetColor(paddleObject, color);
 
         // Se registra para el update
         CustomUpdateManager.Instance.RegisterUpdatable(this);
@@ -31,20 +28,5 @@ public class Paddle : IUpdatable
     public void Destroy()
     {
         CustomUpdateManager.Instance.UnregisterUpdatable(this);
-    }
-
-    public static class ColorUtils
-    {
-        public static void SetColor(GameObject obj, Color color)
-        {
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            Renderer renderer = obj.GetComponent<Renderer>();
-
-            if (renderer != null)
-            {
-                block.SetColor("_Color", color);
-                renderer.SetPropertyBlock(block);
-            }
-        }
     }
 }

@@ -1,24 +1,19 @@
 using UnityEngine;
 
-public class PaddleManager : MonoBehaviour, IUpdatable
+public class PaddleManager :  IUpdatable
 {
     private Paddle paddle;
-
-    [SerializeField] private Color paddleColor = Color.white;
-
-    [Header("Parallax Settings")]
-    [SerializeField] private string[] parallaxAddresses;
-    [SerializeField] private float[] parallaxFactors;
-    [SerializeField] private Transform parallaxParent;
-
     private ParallaxSystem parallaxSystem;
+    private GameObject paddleObject;
 
-    private void OnEnable()
+    public PaddleManager(GameObject paddleObject, string[] parallaxAddresses, float[] parallaxFactors, Transform parallaxParent)
     {
-        paddle = new Paddle(this.gameObject, paddleColor);
+        this.paddleObject = paddleObject;
+
+        paddle = new Paddle(paddleObject);
         CustomUpdateManager.Instance.RegisterUpdatable(this);
 
-        parallaxSystem = new ParallaxSystem(transform);
+        parallaxSystem = new ParallaxSystem(paddleObject.transform);
 
         for (int i = 0; i < parallaxAddresses.Length && i < parallaxFactors.Length; i++)
         {
@@ -32,17 +27,14 @@ public class PaddleManager : MonoBehaviour, IUpdatable
         CustomUpdateManager.Instance.RegisterUpdatable(parallaxSystem);
     }
 
-    private void OnDisable()
-    {
-        if (CustomUpdateManager.Instance != null)
-        {
-            CustomUpdateManager.Instance.UnregisterUpdatable(this);
-            CustomUpdateManager.Instance.UnregisterUpdatable(parallaxSystem);
-        }          
-    }
-
     public void OnUpdate()
     {
         paddle.OnUpdate();
+    }
+
+    public void Destroy()
+    {
+        CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        CustomUpdateManager.Instance.UnregisterUpdatable(parallaxSystem);
     }
 }

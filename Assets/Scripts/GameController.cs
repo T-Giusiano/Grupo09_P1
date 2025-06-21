@@ -11,6 +11,13 @@ public class GameController : MonoBehaviour
     private GameObjectPool ballPool;
     private GameObjectPool extraBallPool;
 
+    //ReferenciasPaddleManager
+    private GameObject paddlePrefab;
+    [SerializeField] private PaddleManager paddleManager;
+    [SerializeField] private string[] parallaxAddresses;
+    [SerializeField] private float[] parallaxFactors;
+    [SerializeField] private Transform parallaxParent;
+
     [SerializeField] private List<PowerUpCFIG> configs;
 
     private List<Brick> activeBricks = new List<Brick>();
@@ -37,14 +44,15 @@ public class GameController : MonoBehaviour
         //Referencias de prefabs
         GameObject ballPrefab = Resources.Load<GameObject>("Prefabs/Ball");
         GameObject extraBallPrefab = Resources.Load<GameObject>("Prefabs/ExtraBall");
-        GameObject paddlePrefab = Resources.Load<GameObject>("Prefabs/ExtraBall");
+        paddlePrefab = Resources.Load<GameObject>("Prefabs/Paddle");
         GameObject[] marginsPrefab = GameObject.FindGameObjectsWithTag("Margin");
 
         //Inicio de Pools
         ballPool = new GameObjectPool(ballPrefab, 3, null);
         extraBallPool = new GameObjectPool(extraBallPrefab, 6, null);
 
-        //Instanciar Ball principal
+        //Instanciar Paddle y Ball principal
+        SpawnPaddle(new Vector3(0, 0, 0));
         SpawnInitialBall();
 
         //Set de colores de prefabs
@@ -121,6 +129,13 @@ public class GameController : MonoBehaviour
         bricksToWin--;
         ScoreManager.Instance.CheckBricks();
         SceneAndUIManager.Instance.UpdateBlocksUI();
+    }
+    private void SpawnPaddle(Vector3 position)
+    {
+        GameObject paddleGO = Instantiate(paddlePrefab, position, Quaternion.identity);
+        ColorController.SetColorByTag(paddleGO);
+
+        paddleManager = new PaddleManager(paddleGO, parallaxAddresses, parallaxFactors, parallaxParent);
     }
 
     private void SpawnInitialBall()
