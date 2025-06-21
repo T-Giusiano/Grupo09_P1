@@ -12,7 +12,8 @@ public class GameController : MonoBehaviour
     private GameObjectPool extraBallPool;
 
     //ReferenciasPaddleManager
-    private GameObject paddlePrefab;
+    private GameObject paddlePrefab; //Prefab
+    public GameObject paddleGO; //Referencia Paddle en escena
     [SerializeField] private PaddleManager paddleManager;
     [SerializeField] private string[] parallaxAddresses;
     [SerializeField] private float[] parallaxFactors;
@@ -132,7 +133,7 @@ public class GameController : MonoBehaviour
     }
     private void SpawnPaddle(Vector3 position)
     {
-        GameObject paddleGO = Instantiate(paddlePrefab, position, Quaternion.identity);
+        paddleGO = Instantiate(paddlePrefab, position, Quaternion.identity);
         ColorController.SetColorByTag(paddleGO);
 
         paddleManager = new PaddleManager(paddleGO, parallaxAddresses, parallaxFactors, parallaxParent);
@@ -141,10 +142,9 @@ public class GameController : MonoBehaviour
     private void SpawnInitialBall()
     {
         GameObject ballGO = ballPool.Get();
-
-        BallController ball = new BallController(ballGO, audioSource, bounceClip, this);
+        BallController ball = new BallController(ballGO, audioSource, bounceClip, this, paddleGO);
         ball.GameObject.SetActive(true);
-        ball.ResetBall();
+        ball.ResetBall(paddleGO);
 
         activeBalls.Add(ball);
         ColorController.SetColorByTag(ballGO);
@@ -164,8 +164,7 @@ public class GameController : MonoBehaviour
         GameObject ballGO = extraBallPool.Get();
         ballGO.transform.position = position;
         ballGO.SetActive(true);
-
-        ExtraBall ball = new ExtraBall(ballGO, audioSource, bounceClip, this);
+        ExtraBall ball = new ExtraBall(ballGO, audioSource, bounceClip, this, paddleGO);
         ball.LaunchBall();
 
         activeBalls.Add(ball);

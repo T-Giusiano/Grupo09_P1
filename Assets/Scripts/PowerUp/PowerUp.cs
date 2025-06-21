@@ -32,7 +32,7 @@ public class PowerUp : MonoBehaviour, IUpdatable
             GameObject.Destroy(gameObject);
         }
 
-        GameObject paddle = GameObject.Find("Paddle");
+        GameObject paddle = gameController.paddleGO;
         if (IsCollidingWith(paddle))
         {
             Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);

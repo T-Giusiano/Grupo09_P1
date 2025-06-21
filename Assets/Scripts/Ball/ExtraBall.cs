@@ -10,13 +10,13 @@ public class ExtraBall : IUpdatable
     private AudioSource audioSource;
     private AudioClip bounceClip;
 
-    public ExtraBall(GameObject gameObject, AudioSource audioSource, AudioClip bounceClip, GameController controller)
+    public ExtraBall(GameObject gameObject, AudioSource audioSource, AudioClip bounceClip, GameController controller, GameObject paddleOBJ)
     {
         this.GameObject = gameObject;
         this.audioSource = audioSource;
         this.bounceClip = bounceClip;
         this.gameController = controller;
-        paddle = GameObject.Find("Paddle");
+        paddle = paddleOBJ;
     }
 
     public void OnUpdate()

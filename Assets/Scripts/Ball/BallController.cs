@@ -11,13 +11,13 @@ public class BallController : IUpdatable
     private AudioSource audioSource;
     private AudioClip bounceClip;
 
-    public BallController(GameObject gameObject, AudioSource audioSource, AudioClip bounceClip, GameController controller)
+    public BallController(GameObject gameObject, AudioSource audioSource, AudioClip bounceClip, GameController controller, GameObject paddleOBJ)
     {
         this.GameObject = gameObject;
         this.audioSource = audioSource;
         this.bounceClip = bounceClip;
         this.gameController = controller;
-        paddle = GameObject.Find("Paddle");
+        paddle = paddleOBJ;
     }
 
     public void OnUpdate()
@@ -87,9 +87,9 @@ public class BallController : IUpdatable
         velocity = direction * speed;
     }
 
-    public void ResetBall()
+    public void ResetBall(GameObject paddleOBJ)
     {
-        Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
+        Vector3 spawnPos = new Vector3(paddleOBJ.transform.position.x, paddleOBJ.transform.position.y + 0.5f, 0f);
         GameObject.transform.position = spawnPos;
         isLaunched = false;
         velocity = Vector3.zero;
