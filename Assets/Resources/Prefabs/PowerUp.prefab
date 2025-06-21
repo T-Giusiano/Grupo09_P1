@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5155942017477721209}
   - component: {fileID: 4029229605910591905}
   - component: {fileID: 4125451256910961066}
-  - component: {fileID: 1378071789020993619}
   m_Layer: 0
   m_Name: PowerUp
   m_TagString: PowerUp
@@ -84,17 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1378071789020993619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4790984332961117117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86951c72b5de9ab4ca267f10b1c7a8af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: d8c259c5b26224048a37d0e82d66ed21, type: 2}
-  powerUpName: Multiball

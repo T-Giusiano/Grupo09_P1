@@ -23,6 +23,9 @@ public class ColorController
                 case "ExtraBall":
                     colorToApply = Color.green;
                     break;
+                case "PowerUp":
+                    colorToApply = Color.green;
+                    break;
                 case "Margin":
                     colorToApply = Color.black;
                     break;

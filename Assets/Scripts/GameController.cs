@@ -170,6 +170,18 @@ public class GameController : MonoBehaviour
         activeBalls.Add(ball);
         ColorController.SetColorByTag(ballGO);
     }
+    public void SpawnPowerUp(Vector3 position, string powerUpName)
+    {
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/PowerUp");
+        GameObject instance = Instantiate(prefab, position, Quaternion.identity);
+
+        PowerUpCFIG config = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
+
+        PowerUp newPowerUp = new PowerUp(instance, config, powerUpName, this);
+
+        PUPManager.Instance.RegisterPowerUp(powerUpName);
+        ColorController.SetColorByTag(instance);
+    }
 
     public void ReturnExtraBallToPool(ExtraBall ball)
     {

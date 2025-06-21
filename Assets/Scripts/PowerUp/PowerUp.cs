@@ -1,35 +1,34 @@
 using UnityEngine;
 
-public class PowerUp : MonoBehaviour, IUpdatable
+public class PowerUp : IUpdatable
 {
+    private GameObject powerUpObject;
     private float fallSpeed = 3f;
     public PowerUpCFIG config;
     public string powerUpName = "Multiball";
     private GameController gameController;
-    void OnEnable()
-    {
-        CustomUpdateManager.Instance.RegisterUpdatable(this);
-        if (gameController == null)
-        {
-            gameController = GameObject.FindObjectOfType<GameController>();
-        }
-    }
 
-    void OnDisable()
+    public PowerUp(GameObject instance, PowerUpCFIG config, string name, GameController controller)
     {
-        if (CustomUpdateManager.Instance != null)
-            CustomUpdateManager.Instance.UnregisterUpdatable(this);
+        this.powerUpObject = instance;
+        this.config = config;
+        this.powerUpName = name;
+        this.gameController = controller;
+
+        CustomUpdateManager.Instance.RegisterUpdatable(this);
     }
 
     public void OnUpdate()
     {
         if (config == null) return;
 
-        transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+        powerUpObject.transform.position += Vector3.down * fallSpeed * Time.deltaTime;
 
-        if (transform.position.y <= -8f)
+        if (powerUpObject.transform.position.y <= -8f)
         {
-            GameObject.Destroy(gameObject);
+            GameObject.Destroy(powerUpObject);
+            CustomUpdateManager.Instance.UnregisterUpdatable(this);
+            return;
         }
 
         GameObject paddle = gameController.paddleGO;
@@ -40,14 +39,16 @@ public class PowerUp : MonoBehaviour, IUpdatable
             {
                 gameController.SpawnExtraBall(spawnPos);
             }
-            GameObject.Destroy(gameObject);
+
+            GameObject.Destroy(powerUpObject);
+            CustomUpdateManager.Instance.UnregisterUpdatable(this);
         }
     }
 
-    bool IsCollidingWith(GameObject other)
+    private bool IsCollidingWith(GameObject other)
     {
-        Vector3 thisPos = transform.position;
-        Vector3 thisSize = transform.localScale / 2f;
+        Vector3 thisPos = powerUpObject.transform.position;
+        Vector3 thisSize = powerUpObject.transform.localScale / 2f;
         Vector3 otherPos = other.transform.position;
         Vector3 otherSize = other.transform.localScale / 2f;
 

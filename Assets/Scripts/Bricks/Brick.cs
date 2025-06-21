@@ -64,15 +64,7 @@ public class Brick
                 {
                     ScoreManager.Instance.AddScore(200);
                     Vector3 dropPos = BrickObject.transform.position;
-                    GameObject powerUpDrop = Resources.Load<GameObject>("Prefabs/PowerUp");
-                    GameObject powerUpInstance = Object.Instantiate(powerUpDrop, dropPos, Quaternion.identity);
-
-                    PowerUpCFIG multiballConfig = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
-                    PowerUp powerUpScript = powerUpInstance.GetComponent<PowerUp>();
-                    powerUpScript.config = multiballConfig;
-                    powerUpScript.powerUpName = "Multiball";
-
-                    PUPManager.Instance.RegisterPowerUp("Multiball");
+                    gameController.SpawnPowerUp(dropPos, "Multiball");
                 }
                 break;
         }
