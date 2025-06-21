@@ -588,7 +588,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Vidas:'
+  m_text: 'Lives:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 26290f12fa0e2c149b9065026a60aab7, type: 2}
   m_sharedMaterial: {fileID: 8879692020632435642, guid: 26290f12fa0e2c149b9065026a60aab7, type: 2}
@@ -1705,7 +1705,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Bloques:'
+  m_text: 'Bricks:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 26290f12fa0e2c149b9065026a60aab7, type: 2}
   m_sharedMaterial: {fileID: 8879692020632435642, guid: 26290f12fa0e2c149b9065026a60aab7, type: 2}
