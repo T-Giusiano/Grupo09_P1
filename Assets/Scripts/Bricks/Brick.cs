@@ -52,17 +52,17 @@ public class Brick
         switch (Type)
         {
             case BrickType.OneHit:
-                ScoreManager.Instance.AddScore(100);
+                ScoreManager.AddScore(100);
                 break;
 
             case BrickType.TwoHit:
-                ScoreManager.Instance.AddScore(150);
+                ScoreManager.AddScore(150);
                 break;
 
             case BrickType.PowerUp:
                 if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
                 {
-                    ScoreManager.Instance.AddScore(200);
+                    ScoreManager.AddScore(200);
                     Vector3 dropPos = BrickObject.transform.position;
                     gameController.SpawnPowerUp(dropPos, "Multiball");
                 }

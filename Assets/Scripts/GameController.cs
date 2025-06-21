@@ -128,7 +128,7 @@ public class GameController : MonoBehaviour
     {
         activeBricks.Remove(brick);
         bricksToWin--;
-        ScoreManager.Instance.CheckBricks();
+        SceneAndUIManager.Instance.CheckBricks();
         SceneAndUIManager.Instance.UpdateBlocksUI();
     }
     private void SpawnPaddle(Vector3 position)

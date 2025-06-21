@@ -7,10 +7,9 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 {
     public static SceneAndUIManager Instance;
 
-    private int lives = 20;
+    private int lives = 10;
     private int paddleHits = 0;
     private int blocksRemaining = 0;
-    private int score = 0;
 
     private TMP_Text livesText;
     private TMP_Text hitsText;
@@ -32,13 +31,9 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
     private void TryRegister()
     {
         if (CustomUpdateManager.Instance != null)
-        {
             CustomUpdateManager.Instance.RegisterUpdatable(this);
-        }
         else
-        {
             StartCoroutine(WaitForUpdateManager());
-        }
     }
 
     private IEnumerator WaitForUpdateManager()
@@ -80,9 +75,7 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
         UpdateAllUI();
 
         if (PauseCanva != null)
-        {
             PauseCanva.gameObject.SetActive(false);
-        }
     }
 
     private void CountBlocksAtStart()
@@ -118,8 +111,21 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
 
     public void AddScore(int amount)
     {
-        score += amount;
-        UpdateScoreUI();
+        ScoreManager.AddScore(amount);
+    }
+
+    public void CheckBricks()
+    {
+        blocksRemaining = gameController.BricksToWin;
+        if (blocksRemaining <= 0)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
+            UpdateBlocksUI();
+        }
     }
 
     private void UpdateLivesUI()
@@ -141,10 +147,10 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
             blocksText.text = "Bloques: " + blocksRemaining;
     }
 
-    private void UpdateScoreUI()
+    public void UpdateScoreUI()
     {
         if (scoreText != null)
-            scoreText.text = "Score: " + score;
+            scoreText.text = "Score: " + ScoreManager.Score;
     }
 
     public void TogglePauseMenu()
@@ -152,7 +158,6 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
         if (PauseCanva == null) return;
 
         bool isPaused = PauseCanva.gameObject.activeSelf;
-
         PauseCanva.gameObject.SetActive(!isPaused);
         Time.timeScale = isPaused ? 1f : 0f;
     }

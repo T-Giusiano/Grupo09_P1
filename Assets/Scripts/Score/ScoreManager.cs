@@ -1,47 +1,17 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class ScoreManager : MonoBehaviour
+public static class ScoreManager
 {
-    public static ScoreManager Instance;
-    private int score = 0;
-    private TMP_Text scoreText;
-    private int bricksLeft;
+    private static int score = 0;
 
-    private GameController gameController;
-    private void Awake()
+    public static int Score => score;
+
+    public static void ResetScore()
     {
-        gameController = FindAnyObjectByType<GameController>();
-        if (Instance == null)
-            Instance = this;
-
-        GameObject textObject = GameObject.Find("ScoreText");
-        if (textObject != null)
-            scoreText = textObject.GetComponent<TMP_Text>();
-
-        UpdateScoreUI();
+        score = 0;
     }
 
-    public void AddScore(int points)
+    public static void AddScore(int points)
     {
         score += points;
-        UpdateScoreUI();
-    }
-
-    private void UpdateScoreUI()
-    {
-        if (scoreText != null)
-            scoreText.text = "Score: " + score.ToString();
-    }
-
-    public void CheckBricks()
-    {
-        bricksLeft = gameController.BricksToWin;
-
-        if (bricksLeft <= 0)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+        SceneAndUIManager.Instance.UpdateScoreUI();
     }
 }
