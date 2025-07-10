@@ -200,8 +200,8 @@ public class GameController : MonoBehaviour
     {
         GameObject prefab = Resources.Load<GameObject>("Prefabs/PowerUp");
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
-
         PowerUpCFIG config = PUPManager.Instance.GetConfig(powerUpName);
+
         if (config == null)
         {
             Debug.LogError("No se encontró config para " + powerUpName);
@@ -210,8 +210,32 @@ public class GameController : MonoBehaviour
 
         PowerUp newPowerUp = new PowerUp(instance, config, powerUpName, this);
 
+        var renderer = instance.GetComponentInChildren<MeshRenderer>();
+        if (renderer != null)
+        {
+            Color color = Color.white;
+
+            switch (powerUpName)
+            {
+                case "Multiball":
+                    color = Color.green;
+                    break;
+                case "LifePU":
+                    color = Color.white;
+                    break;
+                case "PalletPU":
+                    color = Color.blue;
+                    break;
+            }
+
+            var propertyBlock = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(propertyBlock);
+        }
+
         PUPManager.Instance.RegisterPowerUp(powerUpName);
-        ColorController.SetColorByTag(instance);
+
     }
 
     public void ReturnExtraBallToPool(ExtraBall ball)
