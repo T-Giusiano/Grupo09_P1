@@ -91,6 +91,12 @@ public class SceneAndUIManager : MonoBehaviour, IUpdatable
         UpdateScoreUI();
     }
 
+    public void AddLife(int liveInt)
+    {
+        lives = lives + liveInt;
+        UpdateLivesUI();
+    }
+
     public void LoseLife()
     {
         lives--;

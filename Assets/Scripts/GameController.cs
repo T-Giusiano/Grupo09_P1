@@ -12,12 +12,13 @@ public class GameController : MonoBehaviour
     private GameObjectPool extraBallPool;
 
     //ReferenciasPaddleManager
-    private GameObject paddlePrefab; //Prefab
-    public GameObject paddleGO; //Referencia Paddle en escena
+    private GameObject paddlePrefab;
+    public GameObject paddleGO;
     [SerializeField] private PaddleManager paddleManager;
     [SerializeField] private string[] parallaxAddresses;
     [SerializeField] private float[] parallaxFactors;
     [SerializeField] private Transform parallaxParent;
+    [SerializeField] private string brickAdress;
 
     [SerializeField] private List<PowerUpCFIG> configs;
 
@@ -90,7 +91,7 @@ public class GameController : MonoBehaviour
     private void SpawnBricks(Transform levelParent)
     {
         Transform[] spawns = levelParent.GetComponentsInChildren<Transform>(true);
-    int[] levelData = levelConfigs[currentLevel].bricks;
+        int[] levelData = levelConfigs[currentLevel].bricks;
 
         if (levelData.Length != spawns.Length - 1)
         {
@@ -117,12 +118,37 @@ public class GameController : MonoBehaviour
 
     private void CrearBrick(Vector3 pos, Brick.BrickType type)
     {
-        var prefab = Resources.Load<GameObject>("Prefabs/Brick");
-        var go = Instantiate(prefab, pos, Quaternion.identity);
-        var brick = new Brick(go, type, this);
-        brick.UpdateVisual();
-        activeBricks.Add(brick);
+        Addressables.LoadAssetAsync<GameObject>(brickAdress).Completed += (handle) =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject go = Instantiate(handle.Result, pos, Quaternion.identity);
+                var brick = new Brick(go, type, this);
+
+                string materialKey = "MaterialPropertyBlock";
+                Addressables.LoadAssetAsync<Material>(materialKey).Completed += (matHandle) =>
+                {
+                    if (matHandle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        var renderer = go.GetComponentInChildren<MeshRenderer>();
+                        renderer.material = matHandle.Result;
+                    }
+                    else
+                    {
+                        Debug.LogError($"error en material {materialKey}");
+                    }
+                };
+
+                brick.UpdateVisual();
+                activeBricks.Add(brick);
+            }
+            else
+            {
+                Debug.LogError("No se pudo cargar el brickprefab");
+            }
+        };
     }
+
 
     public void RemoveBrick(Brick brick)
     {
@@ -175,7 +201,12 @@ public class GameController : MonoBehaviour
         GameObject prefab = Resources.Load<GameObject>("Prefabs/PowerUp");
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
 
-        PowerUpCFIG config = Resources.Load<PowerUpCFIG>("Configs/PowerUpConfig");
+        PowerUpCFIG config = PUPManager.Instance.GetConfig(powerUpName);
+        if (config == null)
+        {
+            Debug.LogError("No se encontró config para " + powerUpName);
+            return;
+        }
 
         PowerUp newPowerUp = new PowerUp(instance, config, powerUpName, this);
 

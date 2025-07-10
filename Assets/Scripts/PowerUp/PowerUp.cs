@@ -34,15 +34,33 @@ public class PowerUp : IUpdatable
         GameObject paddle = gameController.paddleGO;
         if (IsCollidingWith(paddle))
         {
-            Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
-            for (int i = 0; i < config.ballsToSpawn; i++)
+            switch (powerUpName)
             {
-                gameController.SpawnExtraBall(spawnPos);
+                case "Multiball":
+                    Vector3 spawnPos = new Vector3(paddle.transform.position.x, paddle.transform.position.y + 0.5f, 0f);
+                    for (int i = 0; i < config.increasePU; i++)
+                    {
+                        gameController.SpawnExtraBall(spawnPos);
+                    }
+                    break;
+
+                case "LifePU":
+                    SceneAndUIManager.Instance.AddLife(config.increasePU);
+                    Debug.Log("+1HP");
+                    break;
+
+                case "PalletPU":
+                    Vector3 scale = gameController.paddleGO.transform.localScale;
+                    scale.x += config.increasePU;
+                    gameController.paddleGO.transform.localScale = scale;
+                    Debug.Log("+1 scalePallet");
+                    break;
             }
 
             GameObject.Destroy(powerUpObject);
             CustomUpdateManager.Instance.UnregisterUpdatable(this);
         }
+
     }
 
     private bool IsCollidingWith(GameObject other)

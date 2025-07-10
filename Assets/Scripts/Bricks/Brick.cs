@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Brick
 {
-    public enum BrickType { OneHit, TwoHit, NonDestructible, PowerUp }
+    public enum BrickType { OneHit, TwoHit, NonDestructible, MultiballPU, Nothing, PalletPU, LifePU}
     public BrickType brickType;
     public BrickType Type { get; private set; }
     public int HitsRemaining { get; private set; }
@@ -27,7 +27,13 @@ public class Brick
             case BrickType.NonDestructible:
                 HitsRemaining = int.MaxValue;
                 break;
-            case BrickType.PowerUp:
+            case BrickType.MultiballPU:
+                HitsRemaining = 1;
+                break;
+            case BrickType.LifePU:
+                HitsRemaining = 1;
+                break;
+            case BrickType.PalletPU:
                 HitsRemaining = 1;
                 break;
         }
@@ -59,12 +65,28 @@ public class Brick
                 ScoreManager.AddScore(150);
                 break;
 
-            case BrickType.PowerUp:
+            case BrickType.MultiballPU:
                 if (PUPManager.Instance.CanSpawnPowerUp("Multiball"))
                 {
                     ScoreManager.AddScore(200);
                     Vector3 dropPos = BrickObject.transform.position;
                     gameController.SpawnPowerUp(dropPos, "Multiball");
+                }
+                break;
+            case BrickType.LifePU:
+                if (PUPManager.Instance.CanSpawnPowerUp("LifePU"))
+                {
+                    ScoreManager.AddScore(200);
+                    Vector3 dropPos = BrickObject.transform.position;
+                    gameController.SpawnPowerUp(dropPos, "LifePU");
+                }
+                break;
+            case BrickType.PalletPU:
+                if (PUPManager.Instance.CanSpawnPowerUp("PalletPU"))
+                {
+                    ScoreManager.AddScore(200);
+                    Vector3 dropPos = BrickObject.transform.position;
+                    gameController.SpawnPowerUp(dropPos, "PalletPU");
                 }
                 break;
         }
@@ -99,8 +121,14 @@ public class Brick
                 newColor = Color.gray;
                 break;
 
-            case BrickType.PowerUp:
+            case BrickType.MultiballPU:
                 newColor = Color.green;
+                break;
+            case BrickType.LifePU:
+                newColor = Color.white;
+                break;
+            case BrickType.PalletPU:
+                newColor = Color.blue;
                 break;
         }
 
